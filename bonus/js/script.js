@@ -1,10 +1,10 @@
 
-let caselle; let bombe; let punteggio=0;
+let caselle; let bombe; let punteggio=0; let fineGioco=0;
 const layout = document.createElement("div");
 const contenitoreGenerale = document.getElementById("main_container");
 function start_game() {
     const minNum = 1; const maxNum = 16; 
-    let punteggio = 0;
+    fineGioco=0;punteggio=0;
     // ASSOCIO LA DIFFICOLTÀ ALLA COSTANTE DIFFICOLTA PER OTTENERE IL VALORE
     const difficolta = parseInt(document.getElementById("opzioni_difficolta").value);
     // DEBUG DIFFICOLTA PER VISUALIZZARE IL CORRETTO FUNZIONAMENTO
@@ -24,10 +24,14 @@ function start_game() {
         const div = generateElements("div", "square", difficolta);
         div.append(i);
         console.log(bombe[i-1])
-        cliccando(div, i, bombe,maxNum,caselle);
         layout.append(div);
+        console.log("stato gioco",fineGioco);
+        cliccando(div, i, bombe,maxNum,caselle);
+
     }
 }
+
+
 
 function numeroCaselle(difficolta, caselle) {
     if (difficolta === 0) {
@@ -69,27 +73,41 @@ function typeSquare(difficolta, classname) {
 function cliccando(div, i, bombe,maxNum,caselle) {
         div.addEventListener("click",
             function () { 
-                if (div.classList.contains('clicked')) return;
+                while(fineGioco === 0){
+                    if (div.classList.contains('clicked')) return;
                     if (bombe.includes(i)) {
-                        div.style.background = "red";
+                        div.classList.add("bomba");
                         console.log("bomba",i);
                         alert("Hai preso una bomba, mi dispiace !"+` ${"Punteggio accumulato: "}${punteggio}`);
-                        punteggio=0;
+                        console.log("Hai preso una bomba, mi dispiace !"+` ${"Punteggio accumulato: "}${punteggio}`)
+                        fineGioco=1;
                     }
                     else{
                         div.classList.add("clicked");
                         aggPunteggio();
                         if(punteggio === (caselle-maxNum)){
                             alert("Non hai preso nemmeno una bomba, Bravissimo !"+` ${"Punteggio accumulato: "}${punteggio}`);
+                            console.log("Non hai preso nemmeno una bomba, Bravissimo !"+` ${"Punteggio accumulato: "}${punteggio}`);
                         }
                     }
-                    
+                }
+                mostrabombe(div,caselle,bombe,i);
                     
             }
             
         );
+
     }
 
+    function mostrabombe(div,caselle,bombe){
+        const celle= document.querySelectorAll('[class^="square"]');
+        for(let i=0;i<caselle;i++){
+            if (bombe.includes(i)) {
+                const cellToReveal = celle[i - 1];
+                cellToReveal.classList.add("bomba");
+            }
+        }
+    }
 
 // PARTE DI CAMPO MINATO 
 
