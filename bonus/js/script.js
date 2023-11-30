@@ -11,6 +11,7 @@ function start_game() {
     // console.log(difficolta)
     // RIGA PER PULIRE PRIMA DI STAMPARE LA "NUOVA" GRIGLIA  
     layout.innerHTML = " ";
+    
     layout.classList.add("grid");
     contenitoreGenerale.append(layout);
     // UN'PÒ DI PADDING SOPRA E SOTTO IN MODO DA AVERE LA GRIGLIA DISTACCATA
@@ -107,6 +108,7 @@ function cliccando(div, i, bombe,maxNum,caselle) {
                 cellToReveal.classList.add("bomba");
             }
         }
+        document.querySelector("button").innerHTML="Riprova!";
     }
 
 // PARTE DI CAMPO MINATO 
