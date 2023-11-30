@@ -23,8 +23,8 @@ function start_game() {
     for (let i = 1; i <= caselle; i++) {
         const div = generateElements("div", "square", difficolta);
         div.append(i);
-        console.log(bombe[i])
-        onlick_azzurrino(div, i, bombe);
+        console.log(bombe[i-1])
+        cliccando(div, i, bombe,maxNum,caselle);
         layout.append(div);
     }
 }
@@ -64,20 +64,24 @@ function typeSquare(difficolta, classname) {
     return classname;
 }
 
-// FUNZIONE CHE QUANDO CLICCHI IL COLORE DIVENTA AZZURRINO
+// FUNZIONE CHE QUANDO CLICCHI IL COLORE DIVENTA AZZURRINO O UNA BOMBA
 
-function onlick_azzurrino(div, i, bombe) {
+function cliccando(div, i, bombe,maxNum,caselle) {
         div.addEventListener("click",
             function () { 
                 if (div.classList.contains('clicked')) return;
                     if (bombe.includes(i)) {
                         div.style.background = "red";
                         console.log("bomba",i);
+                        alert("Hai preso una bomba, mi dispiace !"+` ${"Punteggio accumulato: "}${punteggio}`);
                         punteggio=0;
                     }
                     else{
                         div.classList.add("clicked");
                         aggPunteggio();
+                        if(punteggio === (caselle-maxNum)){
+                            alert("Non hai preso nemmeno una bomba, Bravissimo !"+` ${"Punteggio accumulato: "}${punteggio}`);
+                        }
                     }
                     
                     
@@ -91,7 +95,9 @@ function onlick_azzurrino(div, i, bombe) {
 
 function aggPunteggio(){
     punteggio+=1;
-    console.log(punteggio)
+    // DEBUG
+    // console.log(punteggio)
+    return punteggio;
 }
 
 
